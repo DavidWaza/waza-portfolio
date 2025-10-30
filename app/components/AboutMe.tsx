@@ -7,13 +7,11 @@ import Link from "next/link";
 
 export default function AboutMe() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#F6F6EF] via-[#F9FAF8] to-[#E9F3EF] py-24">
-      {/* Subtle floating gradient blob for depth */}
+    <section className="relative overflow-hidden bg-linear-to-br from-[#F6F6EF] via-[#F9FAF8] to-[#E9F3EF] py-24">
       <div className="absolute -top-32 -left-20 w-96 h-96 bg-[#E2FF76]/20 rounded-full blur-3xl opacity-60 animate-pulse" />
-      <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-[#003432]/5 rounded-full blur-3xl opacity-50" />
+      <div className="absolute bottom-0 right-0 w-120 h-120 bg-[#003432]/5 rounded-full blur-3xl opacity-50" />
 
       <div className="max-w-7xl mx-auto relative z-10 px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-        {/* === LEFT: Image === */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -22,9 +20,8 @@ export default function AboutMe() {
           className="flex justify-center lg:justify-start"
         >
           <div className="relative group">
-            {/* Floating glass container */}
             <div className="absolute inset-0 bg-white/20 backdrop-blur-md rounded-full scale-105 group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-[#003432]/10" />
-            <div className="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full overflow-hidden border-[8px] border-white shadow-xl hover:shadow-2xl transition-all duration-500">
+            <div className="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full overflow-hidden border-8 border-white shadow-xl hover:shadow-2xl transition-all duration-500">
               <Image
                 src="/assets/waza.png"
                 alt="Emediong Idemeto"
@@ -37,7 +34,6 @@ export default function AboutMe() {
           </div>
         </motion.div>
 
-        {/* === RIGHT: Info === */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -60,17 +56,20 @@ export default function AboutMe() {
           </h2>
 
           <p className="text-[#738c8b] text-lg leading-relaxed mb-5">
-            I’m <span className="text-[#003432] font-semibold">Emediong Idemeto</span>, 
-            a frontend engineer dedicated to building clean, modern, and human-centered web experiences.
-            I specialize in translating design concepts into interactive and scalable products that delight users.
+            I’m{" "}
+            <span className="text-[#003432] font-semibold">
+              Emediong Idemeto
+            </span>
+            , a frontend engineer dedicated to building clean, modern, and
+            human-centered web experiences. I specialize in translating design
+            concepts into interactive and scalable products that delight users.
           </p>
 
           <p className="text-[#738c8b] text-lg leading-relaxed mb-10">
-            When I’m not coding, I enjoy exploring design trends, working on motion UI experiments,
-            and mentoring others in the dev community.
+            When I’m not coding, I enjoy exploring design trends, working on
+            motion UI experiments, and mentoring others in the dev community.
           </p>
 
-          {/* === Social Links === */}
           <div className="flex flex-wrap items-center gap-6">
             {[
               {
@@ -108,7 +107,6 @@ export default function AboutMe() {
                   />
                 </motion.div>
 
-                {/* Tooltip */}
                 <span className="absolute left-1/2 -translate-x-1/2 top-16 opacity-0 group-hover:opacity-100 text-sm bg-[#003432] text-white px-3 py-1 rounded-md transition-all duration-300 whitespace-nowrap">
                   {label}
                 </span>

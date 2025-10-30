@@ -23,7 +23,6 @@ export default function StickyNavbar({ phone = "+1234567890" }: Props) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ✅ Dynamic navigation data
   const navLinks = [
     { name: "Resume", href: "/resume.pdf", icon: FileText },
     { name: "Portfolio", href: "/#portfolio", icon: Briefcase },
@@ -39,13 +38,12 @@ export default function StickyNavbar({ phone = "+1234567890" }: Props) {
     <header
       className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "backdrop-blur-md bg-white/60 shadow-sm dark:bg-gray-900/60"
+          ? "backdrop-blur-md bg-[#003432] shadow-sm dark:bg-gray-900/60"
           : "bg-transparent"
       }`}
     >
       <nav className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex h-16 items-center justify-between">
-          {/* Branding */}
           <div className="flex items-center">
             <Link
               href="/"
@@ -76,6 +74,10 @@ export default function StickyNavbar({ phone = "+1234567890" }: Props) {
                   href={href}
                   className={`${linkClass(href)} text-white`}
                   aria-label={name}
+                  target={`${name.includes("Resume") ? "_blank" : ""}`}
+                  rel={`${
+                    name.includes("Resume") ? "noopener noreferrer" : ""
+                  }`}
                   style={{ fontFamily: "var(--font-inter)" }}
                 >
                   <Icon size={18} weight="duotone" />
