@@ -43,7 +43,7 @@ const ProjectDetails = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col gap-6"
           >
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
               {/* Circular Image */}
               <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border border-[#003432]/20 shadow-md shrink-0">
                 <Image
@@ -64,7 +64,7 @@ const ProjectDetails = () => {
                   {project.title}
                 </h1>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3 space-y-4 lg:space-y-0">
                   <span className="bg-[#E2E8E5] px-4 py-1 rounded-md text-sm">
                     {project.year}
                   </span>
@@ -73,7 +73,7 @@ const ProjectDetails = () => {
                   </span>
                   <div>
                     <Link href={project.websiteLink || ""}>
-                      <span className="px-4 py-1 underline text-base">
+                      <span className="lg:px-4 py-1 underline text-base">
                         {`${project.title.split("-")["0"]} Web Link`}
                       </span>
                     </Link>

@@ -23,10 +23,10 @@ const testimonials = [
     image: "/assets/avatars/2.jpg",
   },
   {
-    name: "Emediong Akpan",
+    name: "Emmy Akpan",
     role: "CEO, Scribes",
     feedback:
-      "A perfect blend of design and development — he consistently delivers high-quality work with a deep understanding of user experience.",
+      `What stood out most about working with Emediong was his rare combination of speed and quality. He took on my project and delivered an exceptional website in a remarkably short period of time. The final product turned out beautiful, functional, and far exceeded my expectations. He is a true professional, and I couldn't be happier with the result.`,
     image: "/assets/avatars/3.jpg",
   },
 ];
