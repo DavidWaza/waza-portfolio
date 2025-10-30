@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import SmartButton from "./Button";
 import { Phone } from "@phosphor-icons/react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import ContactModal from "./ModalPopup";
 
 const Herobanner = () => {
+  const [open, setOpen] = useState(false);
   return (
     <section className="lg:h-screen bg-[#003432] flex items-center pt-20 lg:mt-0">
       <div className="mx-auto max-w-350 px-6 lg:px-8 py-12 w-full">
@@ -46,9 +48,10 @@ const Herobanner = () => {
               <SmartButton
                 label="Schedule a call"
                 icon={<Phone size={20} weight="duotone" />}
-                onClick={() => alert("Let's connect!")}
+                onClick={() => setOpen(true)}
               />
             </div>
+            <ContactModal open={open} onClose={() => setOpen(false)} />
           </motion.div>
 
           {/* ==== RIGHT IMAGE ==== */}

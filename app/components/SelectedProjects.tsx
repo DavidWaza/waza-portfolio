@@ -43,9 +43,10 @@ const SelectedProjects = () => {
               variants={fadeUp}
             >
               <Link
-                href={project.link || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/projects/${project.title
+                  .split(" - ")[0]
+                  .toLowerCase()
+                  .replace(/\s+/g, "")}`}
               >
                 <motion.div
                   whileHover={{ scale: 1.015 }}

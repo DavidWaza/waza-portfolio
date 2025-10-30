@@ -4,6 +4,8 @@ import Image from "next/image";
 import SmartButton from "./Button";
 import { Phone } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
+import ContactModal from "./ModalPopup";
+import { useState } from "react";
 
 interface ServiceCardProps {
   iconSrc: string;
@@ -20,8 +22,8 @@ const ServiceCard = ({
   description,
   features,
   buttonLabel = "Schedule a call",
-  onButtonClick,
 }: ServiceCardProps) => {
+  const [open, setOpen] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -75,13 +77,14 @@ const ServiceCard = ({
       </div>
 
       {/* Button */}
-      <div className="pt-10">
+      {/* <div className="pt-10">
         <SmartButton
           label={buttonLabel}
           icon={<Phone size={20} weight="duotone" />}
-          onClick={onButtonClick}
+           onClick={() => setOpen(true)}
         />
-      </div>
+      </div> */}
+      <ContactModal open={open} onClose={() => setOpen(false)} />
     </motion.div>
   );
 };
