@@ -3,13 +3,15 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Briefcase, Phone } from "@phosphor-icons/react";
+import { FileText, Briefcase, Phone, List, X } from "@phosphor-icons/react";
 import SmartButton from "./Button";
 import ContactModal from "./ModalPopup";
+import { Tally2 } from "lucide-react";
 
 export default function StickyNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -23,7 +25,7 @@ export default function StickyNavbar() {
 
   const navLinks = [
     { name: "Resume", href: "/resume.pdf", icon: FileText },
-    { name: "Portfolio", href: "/#portfolio", icon: Briefcase },
+    // { name: "Portfolio", href: "/#portfolio", icon: Briefcase },
   ];
 
   const bgClass =
@@ -57,9 +59,9 @@ export default function StickyNavbar() {
               </Link>
             </div>
 
-            {/* Nav Links + Button */}
-            <div className="flex items-center gap-6">
-              <div className="hidden md:flex md:items-center md:gap-1">
+            {/* Desktop Nav Links + Button */}
+            <div className="hidden md:flex md:items-center md:gap-6">
+              <div className="flex items-center gap-1">
                 {navLinks.map(({ name, href, icon: Icon }) => (
                   <Link
                     key={name}
@@ -81,10 +83,88 @@ export default function StickyNavbar() {
                 onClick={() => setOpen(true)}
               />
             </div>
-            <ContactModal open={open} onClose={() => setOpen(false)} />
+
+            {/* Mobile Menu Button */}
+            <div className="flex md:hidden items-center gap-3">
+              <SmartButton
+                label=""
+                icon={<Phone size={20} weight="duotone" />}
+                onClick={() => setOpen(true)}
+                className="!px-3"
+              />
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-white p-2 hover:bg-white/10 rounded-md transition-all duration-300 relative w-10 h-10 flex items-center justify-center"
+                aria-label="Toggle menu"
+              >
+                <div className="relative w-6 h-6">
+                  <X
+                    size={24}
+                    weight="bold"
+                    className={`absolute inset-0 transition-all duration-300 ${
+                      mobileMenuOpen
+                        ? "opacity-100 rotate-0 scale-100"
+                        : "opacity-0 rotate-90 scale-0"
+                    }`}
+                  />
+                  <Tally2
+                    size={24}
+                    // weight="bold"
+                    className={`absolute inset-0 transition-all duration-300 rotate-90 ${
+                      mobileMenuOpen
+                        ? "opacity-0 -rotate-90 scale-0"
+                        : "opacity-100 rotate-0 scale-100"
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          <div
+            className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+              mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            }`}
+          >
+            <div className="pt-4 pb-3 mt-3">
+              <div className="flex flex-col gap-2 bg-gradient-to-b from-emerald-900/20 to-teal-900/10 backdrop-blur-sm rounded-xl p-3 border border-emerald-500/20 shadow-lg">
+                {navLinks.map(({ name, href, icon: Icon }, index) => (
+                  <Link
+                    key={name}
+                    href={href}
+                    className="group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white hover:bg-gradient-to-r hover:from-emerald-500/20 hover:to-teal-500/20 transition-all duration-200 hover:translate-x-1 border border-transparent hover:border-emerald-500/30"
+                    target={name === "Resume" ? "_blank" : undefined}
+                    rel={name === "Resume" ? "noopener noreferrer" : undefined}
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="w-8 h-8 rounded-md bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                      <Icon size={18} weight="duotone" />
+                    </div>
+                    <span className="flex-1">{name}</span>
+                    <svg
+                      className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </nav>
       </header>
+
+      <ContactModal open={open} onClose={() => setOpen(false)} />
     </>
   );
 }
