@@ -7,11 +7,20 @@ import { FileText, Briefcase, Phone, List, X } from "@phosphor-icons/react";
 import SmartButton from "./Button";
 import ContactModal from "./ModalPopup";
 import { Tally2 } from "lucide-react";
+import { toast } from "sonner";
+import { getSupabase } from "../config/supabaseClient";
+import { HeroRow } from "../page";
+
+interface ResumeProps {
+  resumes:string
+}
+
 
 export default function StickyNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -23,16 +32,46 @@ export default function StickyNavbar() {
     }
   }, [isHome]);
 
-  const navLinks = [
-    { name: "Resume", href: "/resume.pdf", icon: FileText },
-    // { name: "Portfolio", href: "/#portfolio", icon: Briefcase },
-  ];
-
+  
   const bgClass =
-    !isHome || scrolled
-      ? "backdrop-blur-md bg-[#003432] shadow-sm"
-      : "bg-transparent";
+  !isHome || scrolled
+  ? "backdrop-blur-md bg-[#003432] shadow-sm"
+  : "bg-transparent";
+  
+  const [resumeData, setResumeData] = useState<ResumeProps | null>(null);
+  
+  const supabase = getSupabase();
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      setFetching(true);
+      const { data:resume, error } = await supabase
+      .from("hero")
+      .select("resumes")
+      .limit(1)
+      .single();
+      if (error) {
+        console.error("Hero fetch error:", error);
+        toast.error("Failed to fetch resume");
+      } else {
+        setResumeData(resume);
+      }
+      setFetching(false);
+    };
+    fetchData();
+  }, [supabase]);
+  
+  if (fetching) {
+    return (
+      <section className="lg:h-screen bg-[#003432] flex items-center justify-center pt-20 lg:mt-0">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E2FF76]"></div>
+      </section>
+    );
+  }
 
+  console.log(resumeData, 'ress')
+  const navLinks = [{ name: "Resume",  icon: FileText }];
+  
   return (
     <>
       {/* === NAVBAR === */}
@@ -62,10 +101,10 @@ export default function StickyNavbar() {
             {/* Desktop Nav Links + Button */}
             <div className="hidden md:flex md:items-center md:gap-6">
               <div className="flex items-center gap-1">
-                {navLinks.map(({ name, href, icon: Icon }) => (
+                {navLinks.map(({ name, icon: Icon }) => (
                   <Link
                     key={name}
-                    href={href}
+                    href={resumeData?.resumes || ""}
                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white hover:text-emerald-100 transition-colors duration-150"
                     target={name === "Resume" ? "_blank" : undefined}
                     rel={name === "Resume" ? "noopener noreferrer" : undefined}
@@ -90,7 +129,7 @@ export default function StickyNavbar() {
                 label=""
                 icon={<Phone size={20} weight="duotone" />}
                 onClick={() => setOpen(true)}
-                className="!px-3"
+                className="px-3!"
               />
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -128,12 +167,12 @@ export default function StickyNavbar() {
             }`}
           >
             <div className="pt-4 pb-3 mt-3">
-              <div className="flex flex-col gap-2 bg-gradient-to-b from-emerald-900/20 to-teal-900/10 backdrop-blur-sm rounded-xl p-3 border border-emerald-500/20 shadow-lg">
-                {navLinks.map(({ name, href, icon: Icon }, index) => (
+              <div className="flex flex-col gap-2 bg-linear-to-b from-emerald-900/20 to-teal-900/10 backdrop-blur-sm rounded-xl p-3 border border-emerald-500/20 shadow-lg">
+                {navLinks.map(({ name, icon: Icon }, index) => (
                   <Link
                     key={name}
-                    href={href}
-                    className="group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white hover:bg-gradient-to-r hover:from-emerald-500/20 hover:to-teal-500/20 transition-all duration-200 hover:translate-x-1 border border-transparent hover:border-emerald-500/30"
+                    href={resumeData?.resumes || ""}
+                    className="group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white hover:bg-linear-to-r hover:from-emerald-500/20 hover:to-teal-500/20 transition-all duration-200 hover:translate-x-1 border border-transparent hover:border-emerald-500/30"
                     target={name === "Resume" ? "_blank" : undefined}
                     rel={name === "Resume" ? "noopener noreferrer" : undefined}
                     onClick={() => setMobileMenuOpen(false)}
@@ -163,7 +202,6 @@ export default function StickyNavbar() {
           </div>
         </nav>
       </header>
-
       <ContactModal open={open} onClose={() => setOpen(false)} />
     </>
   );

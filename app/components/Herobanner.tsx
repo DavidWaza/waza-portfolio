@@ -1,19 +1,22 @@
 "use client";
-
 import React, { useState } from "react";
 import SmartButton from "./Button";
 import { Phone } from "@phosphor-icons/react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import ContactModal from "./ModalPopup";
+import { HeroRow } from "../page";
 
-const Herobanner = () => {
+interface HeroProps {
+  heroData: HeroRow | null;
+}
+
+const Herobanner = ({ heroData }: HeroProps) => {
   const [open, setOpen] = useState(false);
   return (
     <section className="lg:h-screen bg-[#003432] flex items-center pt-20 lg:mt-0">
       <div className="mx-auto max-w-350 px-6 lg:px-8 py-12 w-full">
         <div className="grid md:grid-cols-2 gap-4 items-center">
-          {/* ==== LEFT TEXT ==== */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -35,13 +38,12 @@ const Herobanner = () => {
                 className="text-5xl lg:text-7xl leading-tighter  text-white"
                 style={{ fontFamily: "var(--font-instrument-serif)" }}
               >
-                Software Developer / Frontend Engineer
+                {heroData?.title}
               </p>
             </div>
 
             <p className="text-xl text-[#738C8B] font-medium max-w-lg">
-              I design websites that crush performance goals making both your
-              users and investors happy.
+              {heroData?.description}
             </p>
 
             <div className="py-10">
@@ -75,7 +77,10 @@ const Herobanner = () => {
             >
               <div className="absolute inset-0 blur-3xl opacity-30 bg-emerald-500/40 rounded-full" />
               <Image
-                src="/assets/waza-anime-removebg-preview.png"
+                src={`${
+                  heroData?.images[0] ||
+                  "/assets/waza-anime-removebg-preview.png"
+                }`}
                 alt="Animated developer illustration"
                 width={800}
                 height={800}
