@@ -1,18 +1,57 @@
 "use client";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import SmartButton from "./Button";
 import { Phone } from "@phosphor-icons/react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import ContactModal from "./ModalPopup";
-import { HeroRow } from "../page";
+import { toast } from "sonner";
+import { getSupabase } from "../config/supabaseClient";
 
-interface HeroProps {
-  heroData: HeroRow | null;
-}
+export type HeroRow = {
+  id: number;
+  title: string;
+  description: string;
+  phones: string[];
+  images: string[];
+  resumes: string | null;
+  created_at?: string;
+};
 
-const Herobanner = ({ heroData }: HeroProps) => {
+const Herobanner = () => {
   const [open, setOpen] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  const [data, setData] = useState<HeroRow | null>(null);
+
+  // Initialize supabase
+  const supabase = getSupabase();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setFetching(true);
+      const { data, error } = await supabase
+        .from("hero")
+        .select("*")
+        .limit(1)
+        .single();
+      if (error) {
+        console.error("Hero fetch error:", error);
+        toast.error("Failed to fetch data");
+      } else {
+        setData(data || null);
+      }
+      setFetching(false);
+    };
+    fetchData();
+  }, [supabase]);
+
+  if (fetching) {
+    return (
+      <section className="lg:h-screen bg-[#003432] flex items-center justify-center pt-20 lg:mt-0">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E2FF76]"></div>
+      </section>
+    );
+  }
   return (
     <section className="lg:h-screen bg-[#003432] flex items-center pt-20 lg:mt-0">
       <div className="mx-auto max-w-350 px-6 lg:px-8 py-12 w-full">
@@ -38,12 +77,12 @@ const Herobanner = ({ heroData }: HeroProps) => {
                 className="text-5xl lg:text-7xl leading-tighter  text-white"
                 style={{ fontFamily: "var(--font-instrument-serif)" }}
               >
-                {heroData?.title}
+                {data?.title}
               </p>
             </div>
 
             <p className="text-xl text-[#738C8B] font-medium max-w-lg">
-              {heroData?.description}
+              {data?.description}
             </p>
 
             <div className="py-10">
@@ -78,8 +117,7 @@ const Herobanner = ({ heroData }: HeroProps) => {
               <div className="absolute inset-0 blur-3xl opacity-30 bg-emerald-500/40 rounded-full" />
               <Image
                 src={`${
-                  heroData?.images[0] ||
-                  "/assets/waza-anime-removebg-preview.png"
+                  data?.images[0] || "/assets/waza-anime-removebg-preview.png"
                 }`}
                 alt="Animated developer illustration"
                 width={800}

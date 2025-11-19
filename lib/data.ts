@@ -223,3 +223,10 @@ Key user personas included government officials, diplomats, event coordinators, 
     link: "/projects/ceo-diplomats-global",
   },
 ];
+
+
+export interface ServiceProps {
+  title: string;
+  description: string;
+ roles:string[]
+}

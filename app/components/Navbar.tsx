@@ -9,7 +9,6 @@ import ContactModal from "./ModalPopup";
 import { Tally2 } from "lucide-react";
 import { toast } from "sonner";
 import { getSupabase } from "../config/supabaseClient";
-import { HeroRow } from "../page";
 
 interface ResumeProps {
   resumes:string
@@ -69,7 +68,6 @@ export default function StickyNavbar() {
     );
   }
 
-  console.log(resumeData, 'ress')
   const navLinks = [{ name: "Resume",  icon: FileText }];
   
   return (

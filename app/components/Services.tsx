@@ -1,7 +1,46 @@
 "use client";
+import { toast } from "sonner";
 import ServiceCard from "./ServicesCard";
+import { Project, ServiceProps } from "@/lib/data";
+import { useEffect, useState } from "react";
+import { getSupabase } from "../config/supabaseClient";
 
 const Services = () => {
+  const [fetching, setFetching] = useState(false);
+  const [data, setData] = useState<ServiceProps[] | null>(null);
+
+  const supabase = getSupabase();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setFetching(true);
+
+      const { data: serviceData, error } = await supabase
+        .from("services")
+        .select("*");
+
+      if (error) {
+        console.error("Hero fetch error:", error);
+        toast.error("Failed to fetch data");
+      } else {
+        setData(serviceData as ServiceProps[]);
+      }
+
+      setFetching(false);
+    };
+
+    fetchData();
+  }, [supabase]);
+
+  if (fetching) {
+    return (
+      <section className="lg:h-screen bg-[#003432] flex items-center justify-center pt-20 lg:mt-0">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E2FF76]"></div>
+      </section>
+    );
+  }
+
+  console.log(data, "seervvvv");
   const services = [
     {
       iconSrc: "/assets/logos/icons8-monitor-50.png",
@@ -69,15 +108,25 @@ const Services = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-5 my-20">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={index}
-              {...service}
-              onButtonClick={() =>
-                alert(`Let's connect about ${service.title}!`)
-              }
-            />
-          ))}
+          {data?.map((service, idx) => {
+            return (
+              <ServiceCard
+                key={idx}
+                title={service.title}
+                description={service.description}
+                roles={service.roles}
+                iconSrc={
+                  service.title.includes("Web")
+                    ? "/assets/logos/icons8-monitor-50.png"
+                    : service.title.includes("UI")
+                    ? "/assets/logos/icons8-figma-50.png"
+                    : service.title.includes("No-Code")
+                    ? "/assets/logos/icons8-wordpress-64.png"
+                    : ""
+                }
+              />
+            );
+          })}
         </div>
       </div>
     </div>

@@ -1,27 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import SmartButton from "./Button";
-import { Phone } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import ContactModal from "./ModalPopup";
 import { useState } from "react";
+import { parseData } from "@/lib/parseData";
 
 interface ServiceCardProps {
   iconSrc: string;
   title: string;
   description: string;
-  features: string[];
-  buttonLabel?: string;
-  onButtonClick?: () => void;
+  roles: string[];
 }
 
 const ServiceCard = ({
   iconSrc,
   title,
   description,
-  features,
-  buttonLabel = "Schedule a call",
+  roles,
 }: ServiceCardProps) => {
   const [open, setOpen] = useState(false);
   return (
@@ -64,26 +60,17 @@ const ServiceCard = ({
 
         {/* Features */}
         <div className="pt-8 space-y-4">
-          {features.map((feature, index) => (
+          {parseData(roles).map((role, index) => (
             <motion.div
               key={index}
               whileHover={{ x: 5 }}
               className="border-b border-gray-200 pb-3 text-[#738c8b]"
             >
-              {feature}
+              {role}
             </motion.div>
           ))}
         </div>
       </div>
-
-      {/* Button */}
-      {/* <div className="pt-10">
-        <SmartButton
-          label={buttonLabel}
-          icon={<Phone size={20} weight="duotone" />}
-           onClick={() => setOpen(true)}
-        />
-      </div> */}
       <ContactModal open={open} onClose={() => setOpen(false)} />
     </motion.div>
   );
