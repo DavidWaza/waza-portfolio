@@ -90,7 +90,7 @@ export default function StickyNavbar() {
                 label=""
                 icon={<Phone size={20} weight="duotone" />}
                 onClick={() => setOpen(true)}
-                className="!px-3"
+                className="px-3"
               />
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -128,7 +128,7 @@ export default function StickyNavbar() {
             }`}
           >
             <div className="pt-4 pb-3 mt-3">
-              <div className="flex flex-col gap-2 bg-gradient-to-b from-emerald-900/20 to-teal-900/10 backdrop-blur-sm rounded-xl p-3 border border-emerald-500/20 shadow-lg">
+              <div className="flex flex-col gap-2 bg-linear-to-b from-emerald-900/20 to-teal-900/10 backdrop-blur-sm rounded-xl p-3 border border-emerald-500/20 shadow-lg">
                 {navLinks.map(({ name, href, icon: Icon }, index) => (
                   <Link
                     key={name}
