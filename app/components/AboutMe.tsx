@@ -49,7 +49,7 @@ export default function AboutMe() {
           </p>
 
           <h2
-            className="text-4xl sm:text-5xl font-semibold mb-6 leading-tight"
+            className="text-4xl sm:text-5xl font-semibold mb-6 leading-tights"
             style={{ fontFamily: "var(--font-instrument-serif)" }}
           >
             Passionate Frontend Developer & Visual Problem Solver

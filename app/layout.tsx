@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${instrumentSerif.variable} ${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
+        <Toaster />
         <Navbar />
         {children}
       </body>
