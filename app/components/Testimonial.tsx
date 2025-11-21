@@ -26,7 +26,7 @@ const testimonials = [
     name: "Emmy Akpan",
     role: "CEO, Scribes",
     feedback:
-      `What stood out most about working with Emediong was his rare combination of speed and quality. He took on my project and delivered an exceptional website in a remarkably short period of time. The final product turned out beautiful, functional, and far exceeded my expectations. He is a true professional, and I couldn't be happier with the result.`,
+      "What stood out most about working with Emediong was his rare combination of speed and quality. He took on my project and delivered an exceptional website in a remarkably short period of time. The final product turned out beautiful, functional, and far exceeded my expectations. He is a true professional, and I couldn't be happier with the result.",
     image: "/assets/avatars/3.jpg",
   },
 ];
@@ -35,7 +35,6 @@ export default function Testimonials() {
   return (
     <section className="bg-[#F6F6EF] py-20 overflow-hidden">
       <div className="mx-auto max-w-6xl px-6 text-center">
-        {/* === Header === */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,29 +55,28 @@ export default function Testimonials() {
             What People Say About My Work
           </h2>
         </motion.div>
-
-        {/* === Swiper Carousel === */}
         <Swiper
           modules={[Pagination, Autoplay, EffectFade]}
           pagination={{ clickable: true }}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           loop={true}
           effect="fade"
+          fadeEffect={{ crossFade: true }}
           speed={1000}
-          className="pb-12"
+          className="pb-12 [&_.swiper-slide]:h-auto! [&_.swiper-wrapper]:items-stretch"
         >
           {testimonials.map((t, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="h-auto">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: false }}
-                className="bg-transparent rounded-2xl p-8 sm:p-10 text-left mx-auto max-w-3xl"
+                className="bg-transparent rounded-2xl p-8 sm:p-10 text-left mx-auto max-w-3xl h-full"
               >
-                <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300">
-                  <p className="text-[#003432] text-lg leading-relaxed mb-6 italic">
-                    “{t.feedback}”
+                <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col">
+                  <p className="text-[#003432] text-lg leading-relaxed mb-6 italic grow">
+                    {t.feedback}
                   </p>
 
                   <div className="flex items-center gap-4">
