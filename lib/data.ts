@@ -230,3 +230,15 @@ export interface ServiceProps {
   description: string;
  roles:string[]
 }
+
+export interface WorkExperienceProps {
+  id: number
+  index: number;
+  title_role:string;
+  company:string;
+  date_started:string;
+  date_ended:string;
+  job_responsibility:string[]
+  job_type:string;
+  location:string
+}
