@@ -6,6 +6,10 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import { Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { useEffect, useState } from "react";
+import { getSupabase } from "../config/supabaseClient";
+import { toast } from "sonner";
+import { TestimonialProps } from "@/lib/data";
 
 const testimonials = [
   {
@@ -32,9 +36,44 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+   const [fetching, setFetching] = useState(false);
+    const [data, setData] = useState<TestimonialProps[]>([]);
+  
+    const supabase = getSupabase();
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        setFetching(true);
+  
+        const { data: testimonialData, error } = await supabase
+          .from("testimonial")
+          .select("*");
+  
+        if (error) {
+          console.error("fetch error:", error);
+          toast.error("Failed to fetch data");
+        } else {
+          setData(testimonialData as TestimonialProps[]);
+        }
+  
+        setFetching(false);
+      };
+  
+      fetchData();
+    }, [supabase]);
+  
+    if (fetching) {
+      return (
+        <section className="lg:h-screen bg-[#003432] flex items-center justify-center pt-20 lg:mt-0">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E2FF76]"></div>
+        </section>
+      );
+    }
+    
   return (
     <section className="bg-[#F6F6EF] py-20 overflow-hidden">
       <div className="mx-auto max-w-6xl px-6 text-center">
+        {/* === Header === */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -65,7 +104,7 @@ export default function Testimonials() {
           speed={1000}
           className="pb-12 [&_.swiper-slide]:h-auto! [&_.swiper-wrapper]:items-stretch"
         >
-          {testimonials.map((t, index) => (
+          {data.map((t, index) => (
             <SwiperSlide key={index} className="h-auto">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
@@ -76,18 +115,18 @@ export default function Testimonials() {
               >
                 <div className="bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col">
                   <p className="text-[#003432] text-lg leading-relaxed mb-6 italic grow">
-                    {t.feedback}
+                    {t.testimonial}
                   </p>
 
                   <div className="flex items-center gap-4">
-                    <motion.img
+                    {/* <motion.img
                       src={t.image}
                       alt={t.name}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3, duration: 0.6 }}
                       className="w-14 h-14 rounded-full object-cover border-2 border-[#003432]/20"
-                    />
+                    /> */}
                     <div>
                       <p className="text-[#003432] font-semibold text-lg">
                         {t.name}

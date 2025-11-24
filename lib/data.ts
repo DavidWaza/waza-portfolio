@@ -242,3 +242,10 @@ export interface WorkExperienceProps {
   job_type:string;
   location:string
 }
+
+export type TestimonialProps = {
+  id:number,
+  name:string;
+  role:string;
+  testimonial:string
+}
