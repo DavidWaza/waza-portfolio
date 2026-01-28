@@ -222,30 +222,75 @@ Key user personas included government officials, diplomats, event coordinators, 
     ],
     link: "/projects/ceo-diplomats-global",
   },
-];
+  {
+    title: "OfferPrep - Lagos, Nigeria",
+    description:
+      "A career coaching platform designed to prepare job seekers for interviews and land their dream jobs through personalized mentorship.",
+    year: "2026",
+    websiteLink: "https://www.offerprep.net/",
+    projectType: "Web App & Booking",
+    caseStudyDescription: `OfferPrep is a career-focused platform dedicated to bridging the gap between job seekers and their career aspirations. The core objective of the platform is to equip candidates with the confidence, practical skills, and insider insights necessary to excel in competitive interviews. Whether for students, recent graduates, or seasoned professionals, OfferPrep provides a structured environment for growth and preparation.
 
+The platform was built to streamline the process of connecting candidates with expert coaches. Before its launch, many job seekers lacked access to quality mock interviews and personalized feedback, often feeling underprepared for real-world hiring scenarios. OfferPrep solved this by offering a seamless booking system for coaching sessions, mock interviews, and tailored feedback rounds.
+
+As the developer, I focused on creating a high-performance, responsive web application that manages bookings and provides a smooth user experience. The integration of scheduling tools and a clean, professional interface ensures that both the seekers and the mentors can collaborate efficiently.
+
+Key features include:
+- Personalized Coaching Sessions — connecting users with industry experts.
+- Mock Interview Booking — simulating real interview environments.
+- Responsive Design — ensuring accessibility across all devices.
+- Feedback Loops — structured post-interview evaluations to improve performance.
+
+The result is a powerful tool that empowers individuals to take control of their career journey, transforming anxiety into confidence and applications into offers.`,
+    stacks: [
+      {
+        name: "Next.js",
+        logo: "/assets/logos/icons8-react-js-50.png",
+        border: "border-[#000000]/20 bg-[#ffffff]",
+      },
+      {
+        name: "TypeScript",
+        logo: "/assets/logos/icons8-typescript-50.png",
+        border: "border-[#3178C6]/30 bg-[#f0f6ff]",
+      },
+      {
+        name: "Tailwind CSS",
+        logo: "/assets/logos/icons8-tailwind-css-48.png",
+        border: "border-[#38BDF8]/30 bg-[#ecfeff]",
+      },
+    ],
+    image:
+      "https://ijjdkudpyglndoarpqti.supabase.co/storage/v1/object/public/logo/1769551801724-WhatsApp_Image_2026-01-27_at_23.00.02.jpeg",
+    caseStudies: [],
+    team: [
+      { name: "Emediong Idemeto", role: "Frontend Developer" },
+      { name: "OfferPrep Team", role: "Client" },
+    ],
+    link: "/projects/offerprep",
+  },
+];
 
 export interface ServiceProps {
   title: string;
   description: string;
- roles:string[]
+  roles: string[];
 }
 
 export interface WorkExperienceProps {
-  id: number
+  id: number;
   index: number;
-  title_role:string;
-  company:string;
-  date_started:string;
-  date_ended:string;
-  job_responsibility:string[]
-  job_type:string;
-  location:string
+  title_role: string;
+  company: string;
+  date_started: string;
+  date_ended: string;
+  job_responsibility: string[];
+  job_type: string;
+  location: string;
 }
 
 export type TestimonialProps = {
-  id:number,
-  name:string;
-  role:string;
-  testimonial:string
-}
+  id: number;
+  name: string;
+  role: string;
+  testimonial: string;
+};

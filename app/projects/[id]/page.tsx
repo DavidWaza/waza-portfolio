@@ -2,24 +2,104 @@
 
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { projects } from "@/lib/data";
+import { projects, Project } from "@/lib/data";
 import { motion } from "framer-motion";
 import { Phone } from "@phosphor-icons/react";
 import SmartButton from "@/app/components/Button";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
 import ContactModal from "@/app/components/ModalPopup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getSupabase } from "@/app/config/supabaseClient";
+
+interface DBProject {
+  title: string;
+  description: string;
+  year: string;
+  application_type: string;
+  tools: string[] | null;
+  logo: string;
+  project_link: string;
+}
 
 const ProjectDetails = () => {
   const pathname = usePathname();
   const slug = pathname.split("/").pop()?.toLowerCase();
   const [open, setOpen] = useState(false);
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const normalizeTitle = (title: string) =>
     title.split(" - ")[0].toLowerCase().replace(/\s+/g, "");
 
-  const project = projects.find((p) => normalizeTitle(p.title) === slug);
+  useEffect(() => {
+    const fetchProject = async () => {
+      setLoading(true);
+      // 1. Check local data first
+      const localProject = projects.find(
+        (p) => normalizeTitle(p.title) === slug,
+      );
+
+      if (localProject) {
+        setProject(localProject);
+        setLoading(false);
+        return;
+      }
+
+      // 2. Fallback to Supabase if not found locally
+      const supabase = getSupabase();
+      // Since slug is generated from title, we need to find a way to match.
+      // We can fetch all and match, or try to construct a query.
+      // For simplicity and correctness with the normalization logic:
+      const { data: dbProjects, error } = await supabase
+        .from("projects")
+        .select("*");
+
+      if (error) {
+        console.error("Error fetching project from Supabase:", error);
+      } else if (dbProjects) {
+        const matchingProject = dbProjects.find(
+          (p: DBProject) => normalizeTitle(p.title) === slug,
+        ) as DBProject | undefined;
+
+        if (matchingProject) {
+          // Map DB project to Project interface
+          const mappedProject: Project = {
+            title: matchingProject.title,
+            description: matchingProject.description,
+            year: matchingProject.year,
+            projectType: matchingProject.application_type,
+            stacks: (matchingProject.tools || []).map((t: string) => ({
+              name: t,
+              logo: "", // We might not have logo in DB for stacks yet
+              border: "",
+            })),
+            image: matchingProject.logo,
+            link: `/projects/${normalizeTitle(matchingProject.title)}`,
+            caseStudies: [], // DB doesn't have case studies yet
+            team: [{ name: "Emediong Idemeto", role: "Frontend Developer" }],
+            caseStudyDescription: matchingProject.description, // Fallback to description
+            websiteLink: matchingProject.project_link,
+          };
+          setProject(mappedProject);
+        }
+      }
+      setLoading(false);
+    };
+
+    if (slug) {
+      fetchProject();
+    }
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="bg-[#F6F6EF] min-h-screen flex flex-col items-center justify-center text-[#003432]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003432]"></div>
+      </div>
+    );
+  }
+
   if (!project) {
     return (
       <div className="bg-[#F6F6EF] min-h-screen flex flex-col items-center justify-center text-[#003432]">
